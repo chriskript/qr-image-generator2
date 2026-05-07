@@ -318,7 +318,7 @@ body {
   transform: translateX(-50%);
   background: var(--text-primary);
   color: white;
-  padding: 0.875rem 1.5rem;
+  padding: 0.625rem 1.5rem;
   border-radius: var(--radius);
   font-size: 0.9rem;
   font-weight: 500;

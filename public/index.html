@@ -29,24 +29,24 @@
     <main class="container main-container">
       <!-- Mode Toggle Tabs -->
       <div class="tabs-container">
-        <button id="urlModeBtn" class="tab-btn active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-          </svg>
-          URL
-        </button>
-        <button id="vcardModeBtn" class="tab-btn">
+        <button id="vcardModeBtn" class="tab-btn active">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
           Contact
         </button>
+        <button id="urlModeBtn" class="tab-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          URL
+        </button>
       </div>
 
       <!-- URL Form Card -->
-      <div id="urlFormContainer" class="form-card">
+      <div id="urlFormContainer" class="form-card hidden">
         <div class="card-header">
           <h2>Generate URL QR Code</h2>
           <p>Enter a website URL to create a scannable QR code</p>
@@ -65,7 +65,7 @@
       </div>
 
       <!-- vCard Form Card -->
-      <div id="vcardFormContainer" class="form-card hidden">
+      <div id="vcardFormContainer" class="form-card">
         <div class="card-header">
           <h2>Generate Contact QR Code</h2>
           <p>Create a digital business card that others can scan</p>
