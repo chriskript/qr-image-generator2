@@ -6,8 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultCard = document.getElementById("resultCard");
     const loadingState = document.getElementById("loadingState");
     const downloadQrBtn = document.getElementById("downloadQrBtn");
-    const toast = document.getElementById("toast");
-    const toastMessage = document.getElementById("toastMessage");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalMessage = document.getElementById("modalMessage");
+    const modalInstruction = document.getElementById("modalInstruction");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
 
     // Mode toggle elements
     const urlModeBtn = document.getElementById("urlModeBtn");
@@ -29,14 +31,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentQrBlob = null;
 
-    // Toast notification
-    function showToast(message, duration = 3000) {
-      toastMessage.textContent = message;
-      toast.classList.remove("hidden");
-      setTimeout(() => {
-        toast.classList.add("hidden");
-      }, duration);
+    // Modal popup notification
+    function showModal(message, instruction = "") {
+      modalMessage.textContent = message;
+      modalInstruction.textContent = instruction;
+      modalOverlay.classList.remove("hidden");
     }
+
+    // Close modal when clicking button or overlay
+    modalCloseBtn.addEventListener("click", () => {
+      modalOverlay.classList.add("hidden");
+    });
+
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+      }
+    });
 
     // Set loading state
     function setLoading(isLoading, btn) {
@@ -96,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = urlInput.value.trim();
 
       if (!url) {
-        showToast("Please enter a valid URL");
+        showModal("Please enter a valid URL");
         urlInput.focus();
         return;
       }
@@ -113,10 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const qrUrl = URL.createObjectURL(currentQrBlob);
         qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
         downloadQrBtn.disabled = false;
-        showToast("QR code generated successfully!");
+        showModal("QR code generated successfully!", "Download the image and share it anywhere. Others can scan it with their phone camera.");
       } catch (error) {
         console.error("Error generating QR code:", error);
-        showToast("Failed to generate QR code. Please try again.");
+        showModal("Failed to generate QR code", "Please check your internet connection and try again.");
         hideResult();
       } finally {
         setLoading(false, submitBtn);
@@ -137,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const address = addressInput.value.trim();
 
       if (!firstName && !lastName && !phone && !email) {
-        showToast("Please enter at least one contact field");
+        showModal("Please enter at least one contact field");
         firstNameInput.focus();
         return;
       }
@@ -164,10 +175,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const qrUrl = URL.createObjectURL(currentQrBlob);
         qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
         downloadQrBtn.disabled = false;
-        showToast("Contact QR code generated successfully!");
+        showModal("Contact QR code ready!", "Others can scan this QR code with their phone camera to instantly add your contact details.");
       } catch (error) {
         console.error("Error generating QR code:", error);
-        showToast("Failed to generate QR code. Please try again.");
+        showModal("Failed to generate contact QR code", "Please check your internet connection and try again.");
         hideResult();
       } finally {
         setLoading(false, submitBtn);
@@ -186,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const address = addressInput.value.trim();
 
       if (!firstName && !lastName && !phone && !email) {
-        showToast("Please enter at least one contact field");
+        showModal("Please enter at least one contact field");
         firstNameInput.focus();
         return;
       }
@@ -215,10 +226,10 @@ document.addEventListener("DOMContentLoaded", () => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(vcardUrl);
-        showToast("vCard downloaded successfully!");
+        showModal("vCard downloaded!", "Share the .vcf file via email, WhatsApp, or any messaging app. Recipients can tap to add you to their contacts.");
       } catch (error) {
         console.error("Error downloading vCard:", error);
-        showToast("Failed to download vCard. Please try again.");
+        showModal("Failed to download vCard", "Please check your internet connection and try again.");
       }
     });
 
@@ -234,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      showToast("QR code downloaded!");
+      showModal("QR code saved!", "The image has been saved to your Downloads folder. Share it or print it for easy scanning.");
     });
 
     // Clear result when switching modes

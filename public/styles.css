@@ -122,6 +122,77 @@ body {
   color: white;
 }
 
+/* Step-by-Step Guide */
+.steps-guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+  border-radius: 50%;
+  color: white;
+}
+
+.step-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.step-number {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.step-connector {
+  width: 24px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.guide-hint {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
 /* Cards */
 .form-card, .result-card {
   background: var(--surface);
@@ -310,25 +381,83 @@ body {
   color: var(--text-secondary);
 }
 
-/* Toast Notification */
-.toast {
+/* Modal Popup Notification */
+.modal-overlay {
   position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--text-primary);
-  color: white;
-  padding: 0.625rem 1.5rem;
-  border-radius: var(--radius);
-  font-size: 0.9rem;
-  font-weight: 500;
-  box-shadow: var(--shadow-lg);
-  z-index: 1000;
-  animation: slideUp 0.3s ease;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
 }
 
-.toast.hidden {
+.modal-overlay.hidden {
   display: none;
+}
+
+.modal-popup {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  max-width: 90vw;
+  width: 320px;
+  animation: scaleIn 0.2s ease;
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: white;
+}
+
+.modal-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.modal-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.modal-instruction {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.modal-close-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Footer */
@@ -396,6 +525,17 @@ body {
   }
 }
 
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   .form-row {
@@ -420,6 +560,20 @@ body {
   
   .qr-display {
     padding: 1.5rem;
+  }
+  
+  .steps-guide {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .step-connector {
+    display: none;
+  }
+  
+  .step-label {
+    font-size: 0.75rem;
   }
 }
   

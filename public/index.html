@@ -65,6 +65,52 @@
         </form>
       </div>
 
+      <!-- Step-by-Step Guide -->
+      <div class="steps-guide">
+        <div class="step">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <div class="step-text">
+            <span class="step-number">1</span>
+            <span class="step-label">Fill your details</span>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </div>
+          <div class="step-text">
+            <span class="step-number">2</span>
+            <span class="step-label">Click Generate</span>
+          </div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </div>
+          <div class="step-text">
+            <span class="step-number">3</span>
+            <span class="step-label">Save & Share</span>
+          </div>
+        </div>
+      </div>
+      <p class="guide-hint">Others scan your QR code to instantly add your contact</p>
+
       <!-- vCard Form Card -->
       <div id="vcardFormContainer" class="form-card">
         <div class="card-header">
@@ -154,9 +200,19 @@
         </div>
       </div>
 
-      <!-- Toast Notification -->
-      <div id="toast" class="toast hidden">
-        <span id="toastMessage"></span>
+      <!-- Modal Notification -->
+      <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal-popup">
+          <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <p id="modalMessage" class="modal-message"></p>
+          <p id="modalInstruction" class="modal-instruction"></p>
+          <button id="modalCloseBtn" class="modal-close-btn">Got it</button>
+        </div>
       </div>
     </main>
 
