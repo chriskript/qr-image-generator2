@@ -26,4 +26,24 @@ body {
     margin-bottom: 20px;
     font-size: 2rem;
   }
+
+  .mode-toggle {
+    margin-bottom: 20px;
+  }
+
+  .mode-toggle button {
+    margin: 0 5px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .btn.active {
+    background-color: #26a69a !important;
+  }
+
+  #downloadVCardBtn {
+    margin-left: 10px;
+  }
   

@@ -11,19 +11,90 @@
 <body>
   <div class="container">
     <h1 class="center-align">QR Code Generator by Chriskript</h1>
-    <div class="row">
-      <form id="qrForm" class="col s12">
-        <div class="row">
-          <div class="input-field col s12">
-            <input type="text" id="urlInput" name="urlInput" class="validate" required>
-            <label for="urlInput">Enter URL</label>
-          </div>
-        </div>
-        <div class="row center-align">
-          <button type="submit" class="btn waves-effect waves-light">Generate QR Code</button>
-        </div>
-      </form>
+
+    <!-- Mode Toggle -->
+    <div class="row center-align mode-toggle">
+      <div class="col s12">
+        <button id="urlModeBtn" class="btn waves-effect waves-light active">URL QR Code</button>
+        <button id="vcardModeBtn" class="btn waves-effect waves-light grey">Contact QR Code</button>
+      </div>
     </div>
+
+    <!-- URL QR Form -->
+    <div id="urlFormContainer">
+      <div class="row">
+        <form id="qrForm" class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" id="urlInput" name="urlInput" class="validate" required>
+              <label for="urlInput">Enter URL</label>
+            </div>
+          </div>
+          <div class="row center-align">
+            <button type="submit" class="btn waves-effect waves-light">Generate QR Code</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- vCard Form -->
+    <div id="vcardFormContainer" class="hidden">
+      <div class="row">
+        <form id="vcardForm" class="col s12">
+          <div class="row">
+            <div class="input-field col s6">
+              <input type="text" id="firstName" name="firstName">
+              <label for="firstName">First Name</label>
+            </div>
+            <div class="input-field col s6">
+              <input type="text" id="lastName" name="lastName">
+              <label for="lastName">Last Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="tel" id="phone" name="phone">
+              <label for="phone">Phone Number</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="email" id="email" name="email">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" id="organization" name="organization">
+              <label for="organization">Organization</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" id="title" name="title">
+              <label for="title">Job Title</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" id="website" name="website">
+              <label for="website">Website</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" id="address" name="address">
+              <label for="address">Address</label>
+            </div>
+          </div>
+          <div class="row center-align">
+            <button type="submit" class="btn waves-effect waves-light">Generate Contact QR Code</button>
+            <button type="button" id="downloadVCardBtn" class="btn waves-effect waves-light grey">Download vCard</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="row center-align" id="qrCode"></div>
   </div>
 
