@@ -1,6 +1,6 @@
-# QR Image Generator
+# ScanCard
 
-A web application that generates QR codes from URLs and contact cards in vCard format.
+A web application that generates scannable QR codes for contact cards (vCard format) and URLs.
 
 ## Features
 

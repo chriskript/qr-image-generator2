@@ -1,7 +1,7 @@
 {
-  "name": "qr-image-generator2",
+  "name": "scancard",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generate scannable QR codes for contact cards and URLs",
   "main": "index.js",
   "type": "module",
   "scripts": {
