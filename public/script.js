@@ -1,7 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Elements
     const form = document.getElementById("qrForm");
     const urlInput = document.getElementById("urlInput");
     const qrCodeDiv = document.getElementById("qrCode");
+    const resultCard = document.getElementById("resultCard");
+    const loadingState = document.getElementById("loadingState");
+    const downloadQrBtn = document.getElementById("downloadQrBtn");
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toastMessage");
 
     // Mode toggle elements
     const urlModeBtn = document.getElementById("urlModeBtn");
@@ -21,25 +27,66 @@ document.addEventListener("DOMContentLoaded", () => {
     const addressInput = document.getElementById("address");
     const downloadVCardBtn = document.getElementById("downloadVCardBtn");
 
+    let currentQrBlob = null;
+
+    // Toast notification
+    function showToast(message, duration = 3000) {
+      toastMessage.textContent = message;
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, duration);
+    }
+
+    // Set loading state
+    function setLoading(isLoading, btn) {
+      const btnText = btn.querySelector(".btn-text");
+      const spinner = btn.querySelector(".spinner");
+
+      if (isLoading) {
+        btn.disabled = true;
+        btnText.classList.add("hidden");
+        spinner.classList.remove("hidden");
+        loadingState.classList.remove("hidden");
+        qrCodeDiv.classList.add("hidden");
+      } else {
+        btn.disabled = false;
+        btnText.classList.remove("hidden");
+        spinner.classList.add("hidden");
+        loadingState.classList.add("hidden");
+        qrCodeDiv.classList.remove("hidden");
+      }
+    }
+
+    // Show result card
+    function showResult() {
+      resultCard.classList.remove("hidden");
+      resultCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    // Hide result card
+    function hideResult() {
+      resultCard.classList.add("hidden");
+      qrCodeDiv.innerHTML = "";
+      currentQrBlob = null;
+      downloadQrBtn.disabled = true;
+    }
+
     // Mode toggle functionality
     urlModeBtn.addEventListener("click", () => {
       urlFormContainer.classList.remove("hidden");
       vcardFormContainer.classList.add("hidden");
       urlModeBtn.classList.add("active");
-      urlModeBtn.classList.remove("grey");
       vcardModeBtn.classList.remove("active");
-      vcardModeBtn.classList.add("grey");
-      qrCodeDiv.innerHTML = "";
+      hideResult();
     });
 
     vcardModeBtn.addEventListener("click", () => {
       urlFormContainer.classList.add("hidden");
       vcardFormContainer.classList.remove("hidden");
       vcardModeBtn.classList.add("active");
-      vcardModeBtn.classList.remove("grey");
       urlModeBtn.classList.remove("active");
-      urlModeBtn.classList.add("grey");
-      qrCodeDiv.innerHTML = "";
+      hideResult();
     });
 
     // URL QR Code generation
@@ -49,21 +96,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = urlInput.value.trim();
 
       if (!url) {
-        alert("Please enter a valid URL.");
+        showToast("Please enter a valid URL");
+        urlInput.focus();
         return;
       }
 
+      const submitBtn = form.querySelector('button[type="submit"]');
+      setLoading(true, submitBtn);
+      showResult();
+
       try {
         const response = await fetch(`/generate?q=${encodeURIComponent(url)}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const qrBlob = await response.blob();
-        const qrUrl = URL.createObjectURL(qrBlob);
-        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code">`;
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        currentQrBlob = await response.blob();
+        const qrUrl = URL.createObjectURL(currentQrBlob);
+        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
+        downloadQrBtn.disabled = false;
+        showToast("QR code generated successfully!");
       } catch (error) {
         console.error("Error generating QR code:", error);
-        alert("An error occurred while generating the QR code. Please try again.");
+        showToast("Failed to generate QR code. Please try again.");
+        hideResult();
+      } finally {
+        setLoading(false, submitBtn);
       }
     });
 
@@ -81,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const address = addressInput.value.trim();
 
       if (!firstName && !lastName && !phone && !email) {
-        alert("Please enter at least one contact field (name, phone, or email).");
+        showToast("Please enter at least one contact field");
+        firstNameInput.focus();
         return;
       }
 
@@ -95,17 +152,25 @@ document.addEventListener("DOMContentLoaded", () => {
       if (website) params.append("website", website);
       if (address) params.append("address", address);
 
+      const submitBtn = vcardForm.querySelector('button[type="submit"]');
+      setLoading(true, submitBtn);
+      showResult();
+
       try {
         const response = await fetch(`/generate-vcard-qr?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const qrBlob = await response.blob();
-        const qrUrl = URL.createObjectURL(qrBlob);
-        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code">`;
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        currentQrBlob = await response.blob();
+        const qrUrl = URL.createObjectURL(currentQrBlob);
+        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
+        downloadQrBtn.disabled = false;
+        showToast("Contact QR code generated successfully!");
       } catch (error) {
         console.error("Error generating QR code:", error);
-        alert("An error occurred while generating the QR code. Please try again.");
+        showToast("Failed to generate QR code. Please try again.");
+        hideResult();
+      } finally {
+        setLoading(false, submitBtn);
       }
     });
 
@@ -121,7 +186,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const address = addressInput.value.trim();
 
       if (!firstName && !lastName && !phone && !email) {
-        alert("Please enter at least one contact field (name, phone, or email).");
+        showToast("Please enter at least one contact field");
+        firstNameInput.focus();
         return;
       }
 
@@ -137,9 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const response = await fetch(`/download-vcard?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
+
         const vcardBlob = await response.blob();
         const vcardUrl = URL.createObjectURL(vcardBlob);
 
@@ -150,10 +215,30 @@ document.addEventListener("DOMContentLoaded", () => {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(vcardUrl);
+        showToast("vCard downloaded successfully!");
       } catch (error) {
         console.error("Error downloading vCard:", error);
-        alert("An error occurred while downloading the vCard. Please try again.");
+        showToast("Failed to download vCard. Please try again.");
       }
     });
+
+    // Download QR Code
+    downloadQrBtn.addEventListener("click", () => {
+      if (!currentQrBlob) return;
+
+      const url = URL.createObjectURL(currentQrBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "qr-code.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast("QR code downloaded!");
+    });
+
+    // Clear result when switching modes
+    urlModeBtn.addEventListener("click", hideResult);
+    vcardModeBtn.addEventListener("click", hideResult);
   });
   

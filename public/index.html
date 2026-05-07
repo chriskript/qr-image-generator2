@@ -4,101 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QR Code Generator | Chriskript</title>
-  <!-- Import Materialize CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1 class="center-align">QR Code Generator by Chriskript</h1>
-
-    <!-- Mode Toggle -->
-    <div class="row center-align mode-toggle">
-      <div class="col s12">
-        <button id="urlModeBtn" class="btn waves-effect waves-light active">URL QR Code</button>
-        <button id="vcardModeBtn" class="btn waves-effect waves-light grey">Contact QR Code</button>
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span>QR Generator</span>
+        </div>
+        <p class="tagline">Create QR codes for URLs & Contacts</p>
       </div>
-    </div>
+    </header>
 
-    <!-- URL QR Form -->
-    <div id="urlFormContainer">
-      <div class="row">
-        <form id="qrForm" class="col s12">
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="text" id="urlInput" name="urlInput" class="validate" required>
-              <label for="urlInput">Enter URL</label>
-            </div>
+    <main class="container main-container">
+      <!-- Mode Toggle Tabs -->
+      <div class="tabs-container">
+        <button id="urlModeBtn" class="tab-btn active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          URL
+        </button>
+        <button id="vcardModeBtn" class="tab-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Contact
+        </button>
+      </div>
+
+      <!-- URL Form Card -->
+      <div id="urlFormContainer" class="form-card">
+        <div class="card-header">
+          <h2>Generate URL QR Code</h2>
+          <p>Enter a website URL to create a scannable QR code</p>
+        </div>
+        <form id="qrForm">
+          <div class="input-group">
+            <label for="urlInput">Website URL</label>
+            <input type="url" id="urlInput" name="urlInput" placeholder="https://example.com" required>
+            <span class="input-hint">Paste any website link</span>
           </div>
-          <div class="row center-align">
-            <button type="submit" class="btn waves-effect waves-light">Generate QR Code</button>
-          </div>
+          <button type="submit" class="btn-primary">
+            <span class="btn-text">Generate QR Code</span>
+            <span class="spinner hidden"></span>
+          </button>
         </form>
       </div>
-    </div>
 
-    <!-- vCard Form -->
-    <div id="vcardFormContainer" class="hidden">
-      <div class="row">
-        <form id="vcardForm" class="col s12">
-          <div class="row">
-            <div class="input-field col s6">
-              <input type="text" id="firstName" name="firstName">
+      <!-- vCard Form Card -->
+      <div id="vcardFormContainer" class="form-card hidden">
+        <div class="card-header">
+          <h2>Generate Contact QR Code</h2>
+          <p>Create a digital business card that others can scan</p>
+        </div>
+        <form id="vcardForm">
+          <div class="form-row">
+            <div class="input-group">
               <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="Chris">
             </div>
-            <div class="input-field col s6">
-              <input type="text" id="lastName" name="lastName">
+            <div class="input-group">
               <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Kript">
             </div>
           </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="tel" id="phone" name="phone">
+
+          <div class="form-row">
+            <div class="input-group">
               <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+234 816 123 4567">
+            </div>
+            <div class="input-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="chriskript@email.com">
             </div>
           </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="email" id="email" name="email">
-              <label for="email">Email</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="text" id="organization" name="organization">
+
+          <div class="form-row">
+            <div class="input-group">
               <label for="organization">Organization</label>
+              <input type="text" id="organization" name="organization" placeholder="Company Inc.">
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="text" id="title" name="title">
+            <div class="input-group">
               <label for="title">Job Title</label>
+              <input type="text" id="title" name="title" placeholder="Software Engineer">
             </div>
           </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="text" id="website" name="website">
+
+          <div class="form-row">
+            <div class="input-group">
               <label for="website">Website</label>
+              <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input type="text" id="address" name="address">
+            <div class="input-group">
               <label for="address">Address</label>
+              <input type="text" id="address" name="address" placeholder="123 Main St, City">
             </div>
           </div>
-          <div class="row center-align">
-            <button type="submit" class="btn waves-effect waves-light">Generate Contact QR Code</button>
-            <button type="button" id="downloadVCardBtn" class="btn waves-effect waves-light grey">Download vCard</button>
+
+          <div class="actions-row">
+            <button type="submit" class="btn-primary">
+              <span class="btn-text">Generate QR Code</span>
+              <span class="spinner hidden"></span>
+            </button>
+            <button type="button" id="downloadVCardBtn" class="btn-secondary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download vCard
+            </button>
           </div>
         </form>
       </div>
-    </div>
 
-    <div class="row center-align" id="qrCode"></div>
+      <!-- QR Code Result Card -->
+      <div id="resultCard" class="result-card hidden">
+        <div class="qr-display">
+          <div id="qrCode"></div>
+          <div id="loadingState" class="loading-state hidden">
+            <div class="spinner-large"></div>
+            <p>Generating your QR code...</p>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button id="downloadQrBtn" class="btn-primary" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download QR Code
+          </button>
+        </div>
+      </div>
+
+      <!-- Toast Notification -->
+      <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Made with <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> by Chriskript</p>
+    </footer>
   </div>
 
-  <!-- Import Materialize JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="script.js"></script>
 </body>
