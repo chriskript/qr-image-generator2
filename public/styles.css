@@ -23,6 +23,22 @@
   --radius-lg: 16px;
 }
 
+/* Dark mode variables */
+[data-theme="dark"] {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --primary-light: #a5b4fc;
+  --secondary: #34d399;
+  --background: #0f172a;
+  --surface: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border: #334155;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--background);
@@ -68,6 +84,39 @@ body {
   color: rgba(255, 255, 255, 0.8);
   margin-top: 0.5rem;
   font-size: 0.95rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.theme-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
 }
 
 /* Main Container */
@@ -308,6 +357,54 @@ body {
   cursor: not-allowed;
 }
 
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Error states */
+.input-group.has-error input {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.input-group.has-error input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.input-error::before {
+  content: "⚠";
+  font-size: 0.9rem;
+}
+
+/* Form validation summary */
+.form-error-summary {
+  background: #fef2f2;
+  border: 1px solid #ef4444;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  color: #ef4444;
+  font-size: 0.9rem;
+}
+
 .btn-secondary {
   background: var(--background);
   color: var(--text-primary);
@@ -316,6 +413,89 @@ body {
 
 .btn-secondary:hover {
   background: var(--border);
+}
+
+/* Profile Photo Upload */
+.input-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.photo-upload {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-upload:hover,
+.photo-upload:focus,
+.photo-upload.drag-over {
+  border-color: var(--primary);
+  background: var(--background);
+}
+
+.photo-upload:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.photo-upload-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.photo-upload-content svg {
+  width: 20px;
+  height: 20px;
+}
+
+.photo-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.photo-preview img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--surface);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.btn-icon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .btn-primary svg, .btn-secondary svg {
@@ -616,5 +796,66 @@ body {
     font-size: 0.8rem;
     padding: 0 0.5rem;
   }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .app-header,
+  .tabs-container,
+  .steps-guide,
+  .guide-hint,
+  .form-card,
+  .app-footer,
+  .modal-overlay,
+  .theme-toggle {
+    display: none !important;
+  }
+  
+  .main-container {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .result-card {
+    box-shadow: none !important;
+    background: white !important;
+    border: none !important;
+    display: block !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid;
+  }
+  
+  .qr-display {
+    background: white !important;
+    min-height: auto !important;
+    padding: 1rem !important;
+  }
+  
+  #qrCode img {
+    max-width: 300px !important;
+    box-shadow: none !important;
+  }
+  
+  .result-actions {
+    display: none !important;
+  }
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
   
