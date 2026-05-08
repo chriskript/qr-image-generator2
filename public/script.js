@@ -125,10 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
         qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
         downloadQrBtn.disabled = false;
         showModal("QR code generated successfully!", "Download the image and share it anywhere. Others can scan it with their phone camera.");
+        if (window.umami) umami.track('generate_url_qr', { url: url });
       } catch (error) {
         console.error("Error generating QR code:", error);
         showModal("Failed to generate QR code", "Please check your internet connection and try again.");
         hideResult();
+        if (window.umami) umami.track('generate_url_qr_error');
       } finally {
         setLoading(false, submitBtn);
       }
@@ -176,10 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
         qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
         downloadQrBtn.disabled = false;
         showModal("Contact QR code ready!", "Others can scan this QR code with their phone camera to instantly add your contact details.");
+        if (window.umami) umami.track('generate_vcard_qr', { firstName, lastName });
       } catch (error) {
         console.error("Error generating QR code:", error);
-        showModal("Failed to generate contact QR code", "Please check your internet connection and try again.");
+        showModal("Failed to generate QR code", "Please check your internet connection and try again.");
         hideResult();
+        if (window.umami) umami.track('generate_vcard_qr_error');
       } finally {
         setLoading(false, submitBtn);
       }
@@ -227,9 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.removeChild(link);
         URL.revokeObjectURL(vcardUrl);
         showModal("vCard downloaded!", "Share the .vcf file via email, WhatsApp, or any messaging app. Recipients can tap to add you to their contacts.");
+        if (window.umami) umami.track('download_vcard', { firstName, lastName });
       } catch (error) {
         console.error("Error downloading vCard:", error);
         showModal("Failed to download vCard", "Please check your internet connection and try again.");
+        if (window.umami) umami.track('download_vcard_error');
       }
     });
 
@@ -280,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
       showModal("QR code saved!", "The image has been saved to your Downloads folder. Share it or print it for easy scanning.");
+      if (window.umami) umami.track('download_qr_image');
     });
 
     // Clear result when switching modes
