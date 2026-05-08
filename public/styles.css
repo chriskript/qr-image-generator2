@@ -474,6 +474,20 @@ body {
   gap: 0.25rem;
 }
 
+.app-footer .footer-separator {
+  margin: 0 0.25rem;
+}
+
+.app-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
 .heart-icon {
   width: 16px;
   height: 16px;

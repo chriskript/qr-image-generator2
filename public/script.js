@@ -233,11 +233,45 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Helper function to add branding to QR code
+    async function addBrandingToQR(blob) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(blob);
+        img.onload = () => {
+          const padding = 20;
+          const textHeight = 35;
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width + padding * 2;
+          canvas.height = img.height + padding * 2 + textHeight;
+          const ctx = canvas.getContext("2d");
+
+          // White background
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          // Draw QR code
+          ctx.drawImage(img, padding, padding);
+
+          // Add branding text
+          ctx.fillStyle = "#64748b";
+          ctx.font = "13px Inter, Arial, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText("Powered by Oneskript · oneskript.com", canvas.width / 2, img.height + padding * 2 + 22);
+
+          URL.revokeObjectURL(url);
+          canvas.toBlob(resolve, "image/png");
+        };
+        img.src = url;
+      });
+    }
+
     // Download QR Code
-    downloadQrBtn.addEventListener("click", () => {
+    downloadQrBtn.addEventListener("click", async () => {
       if (!currentQrBlob) return;
 
-      const url = URL.createObjectURL(currentQrBlob);
+      const brandedBlob = await addBrandingToQR(currentQrBlob);
+      const url = URL.createObjectURL(brandedBlob);
       const link = document.createElement("a");
       link.href = url;
       link.download = "qr-code.png";
