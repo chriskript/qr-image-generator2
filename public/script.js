@@ -122,7 +122,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentQrBlob = await response.blob();
         const qrUrl = URL.createObjectURL(currentQrBlob);
-        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
+        // Security: Use createElement instead of innerHTML
+        const img = document.createElement("img");
+        img.src = qrUrl;
+        img.alt = "QR Code";
+        img.id = "generatedQr";
+        qrCodeDiv.innerHTML = "";
+        qrCodeDiv.appendChild(img);
         downloadQrBtn.disabled = false;
         showModal("QR code generated successfully!", "Download the image and share it anywhere. Others can scan it with their phone camera.");
         if (window.umami) umami.track('generate_url_qr', { url: url });
@@ -155,27 +161,28 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const params = new URLSearchParams();
-      if (firstName) params.append("firstName", firstName);
-      if (lastName) params.append("lastName", lastName);
-      if (phone) params.append("phone", phone);
-      if (email) params.append("email", email);
-      if (organization) params.append("organization", organization);
-      if (title) params.append("title", title);
-      if (website) params.append("website", website);
-      if (address) params.append("address", address);
-
       const submitBtn = vcardForm.querySelector('button[type="submit"]');
       setLoading(true, submitBtn);
       showResult();
 
       try {
-        const response = await fetch(`/generate-vcard-qr?${params.toString()}`);
+        // Security: Use POST to keep contact data out of URL history and server logs
+        const response = await fetch('/generate-vcard-qr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, phone, email, organization, title, website, address })
+        });
         if (!response.ok) throw new Error("Network response was not ok");
 
         currentQrBlob = await response.blob();
         const qrUrl = URL.createObjectURL(currentQrBlob);
-        qrCodeDiv.innerHTML = `<img src="${qrUrl}" alt="QR Code" id="generatedQr">`;
+        // Security: Use createElement instead of innerHTML
+        const img = document.createElement("img");
+        img.src = qrUrl;
+        img.alt = "QR Code";
+        img.id = "generatedQr";
+        qrCodeDiv.innerHTML = "";
+        qrCodeDiv.appendChild(img);
         downloadQrBtn.disabled = false;
         showModal("Contact QR code ready!", "Others can scan this QR code with their phone camera to instantly add your contact details.");
         if (window.umami) umami.track('generate_vcard_qr', { firstName, lastName });
@@ -206,18 +213,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const params = new URLSearchParams();
-      if (firstName) params.append("firstName", firstName);
-      if (lastName) params.append("lastName", lastName);
-      if (phone) params.append("phone", phone);
-      if (email) params.append("email", email);
-      if (organization) params.append("organization", organization);
-      if (title) params.append("title", title);
-      if (website) params.append("website", website);
-      if (address) params.append("address", address);
-
       try {
-        const response = await fetch(`/download-vcard?${params.toString()}`);
+        // Security: Use POST to keep contact data out of URL history and server logs
+        const response = await fetch('/download-vcard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, phone, email, organization, title, website, address })
+        });
         if (!response.ok) throw new Error("Network response was not ok");
 
         const vcardBlob = await response.blob();
