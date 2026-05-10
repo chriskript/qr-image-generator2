@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
     const sunIcon = document.getElementById("sunIcon");
     const moonIcon = document.getElementById("moonIcon");
+    const footerLogo = document.getElementById("footerLogo");
 
     // Mode toggle elements
     const urlModeBtn = document.getElementById("urlModeBtn");
@@ -150,6 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Theme toggle functionality
+    function updateFooterLogo(isDark) {
+      if (footerLogo) {
+        footerLogo.src = isDark ? 'images/oneskript_logo_white.png' : 'images/oneskript_logo_black_text.png';
+      }
+    }
+
     function initTheme() {
       const savedTheme = localStorage.getItem('theme');
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -159,10 +166,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.setAttribute('data-theme', 'dark');
         sunIcon.classList.add('hidden');
         moonIcon.classList.remove('hidden');
+        updateFooterLogo(true);
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
         sunIcon.classList.remove('hidden');
         moonIcon.classList.add('hidden');
+        updateFooterLogo(false);
       }
     }
 
@@ -173,12 +182,14 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem('theme', 'light');
         sunIcon.classList.remove('hidden');
         moonIcon.classList.add('hidden');
+        updateFooterLogo(false);
         announce('Switched to light mode');
       } else {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
         sunIcon.classList.add('hidden');
         moonIcon.classList.remove('hidden');
+        updateFooterLogo(true);
         announce('Switched to dark mode');
       }
     }
